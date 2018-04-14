@@ -196,7 +196,7 @@ body {
       font-style: italic;
     font-weight: 300;
 }
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1500px) {
 	.question-copy {
 		font-size: 25px;
 	}
@@ -800,3 +800,36 @@ body {
   @media only screen and (max-width: 514px) {
     .popup-content-wrap {
       padding: 20px; } }
+
+      .popup-content-wrap .center-align{
+          padding: 0px 40px;
+          -webkit-transform: translate(-50%, -50%);
+          -moz-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+      }
+
+        @media only screen and (max-width: 1500px) {
+    .popup-content-wrap .center-alig{
+      padding: 0px 30px;
+      } }
+  @media only screen and (max-width: 768px) {
+    .popup-content-wrap .center-align{
+     padding: 0px 20px;
+      } }
+  
+.popup-content-wrap .section-title{
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  margin-bottom:20px;
+}
+.fb-share-btn{
+  margin-top:20px;
+}
+      span.fb-icon-wrap {
+    display: inline-block;
+    max-width: 27px;
+    vertical-align: text-bottom;
+    margin-right: 10px;
+} 
