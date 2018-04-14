@@ -766,7 +766,7 @@
 			.staggerFrom(
 				".question-options",
 				0.3,
-				{ opacity: 0, scale: 0.8 },
+				{ opacity: 0, scale: 0.8 ,ease: Bounce.easeOut},
 				0.2
 			),
 
@@ -833,4 +833,8 @@
 
 	Game.fetchQuestions();
 	Question.listeners();
+
+
+	
+        TweenMax.to(".popup-wrap", .5, {autoAlpha:1,display:"block",delay:.5});
 })();
