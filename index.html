@@ -1,45 +1,105 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta content="ie=edge">
-<link href="https://fonts.googleapis.com/css?family=Kanit:200,200i,300,300i,400,900i" rel="stylesheet"><link rel="stylesheet" href="./main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hero Motocorp</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Kanit:200,200i,300,300i,400,900i" rel="stylesheet">
+    <link rel="stylesheet" href="./main.css" />
 </head>
+
 <body>
-<a href="#" class="logo-wrap"><img blockedImageSrc="./assets/images/hero-logo-white.png" alt="" class="logo fluid">
-</a>
-<div class="links-list"><a href="" class="site-btn-secondary">leaderboard</a> </div>
-<div class="overlap-content-wrap">
-<div class="timer-wrap test-2">
-<div class="timer-part timer-part-sides timer-part-left"><span class="player-name timer-copy">Arjun Mulky arjun</span>
-</div>
-<div class="timer-part timer-part-center"><span class="timer-counter"></span></div>
-<div class="timer-part timer-part-sides timer-part-right"><span class="question-indicator timer-copy">Question 10/10</span>
-</div>
-</div>
-<div class="question-popup">
-<div class="popup-header-wrap"></div>
-<div class="question-content-wrap">
-<div class="question-content-wrap-bg"></div>
-<div class="question-copy">When did the Merzouga rally start? </div>
-<div class="options-list">
-<div class="question-options a">option1 </div>
-<div class="question-options b">option2 </div>
-</div>
-</div>
-</div>
-<div class="popup-wrap">
-<div class="popup-content-wrap">
-<div class="center-align">
-<div class="section-title-wrap">
-<h2 class="section-title">Popup title</h2>
-</div>
-<p class="text-copy">Popup copy</p>
-</div>
-</div>
-</div>
-</div>
-<div id="game"></div>
+    <!-- header section start -->
+    <header>
+        <a href="#" class="logo-wrap">
+            <img src="./assets/images/hero-logo-white.png" alt="" class="logo fluid">
+        </a>
+        <div class="links-list">
+            <a href="" class="site-btn-secondary">leaderboard</a>
+        </div>
+    </header>
+    <!-- header section end -->
+
+    <!-- updated added overlap content wrap as parent to timer wrap and quiz popup -->
+
+    <div class="overlap-content-wrap">
+
+
+        <!-- timer section -->
+
+        <div class="timer-wrap test-2">
+            <div class="timer-part timer-part-sides timer-part-left">
+                <span class="player-name timer-copy">Arjun Mulky arjun</span>
+            </div>
+            <div class="timer-part timer-part-center">
+                <span class="timer-counter"></span>
+            </div>
+            <div class="timer-part timer-part-sides timer-part-right">
+                <span class="question-indicator timer-copy">Question 10/10</span>
+            </div>
+        </div>
+
+        <!-- <div class="timer"></div> -->
+
+        <!-- timer section end -->
+
+        <!-- Question popup starts -->
+        <div class="question-popup" style="display: none;">
+            <div class="popup-header-wrap">
+
+            </div>
+
+            <div class="question-content-wrap">
+                <div class="question-content-wrap-bg"></div>
+                <div class="question-copy">
+
+                </div>
+
+                <div class="options-list">
+                    <div class="question-options a">
+
+                    </div>
+                    <div class="question-options b">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Question popup ends -->
+
+        <!-- contest finish popup start -->
+
+        <div class="popup-wrap">
+            <div class="popup-content-wrap">
+                <div class="center-align">
+                    <div class="section-title-wrap">
+                        <h2 class="section-title"></h2>
+                    </div>
+
+                    <p class="text-copy"></p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- contest fisnish popup end -->
+    </div>
+
+    <!-- updated added overlap content wrap as parent to timer wrap and quiz popup -->
+
+
+    <div id="game">
+        <!-- Game runs here -->
+
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <script src="./CustomEase.min.js"></script>
+    <script src="main.js"></script>
 </body>
+
 </html>

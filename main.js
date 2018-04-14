@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	var bgImage = new Image(),
 		bikeAtlas = new Image(),
 		vh = window.innerHeight;
@@ -13,7 +13,7 @@
 	};
 
 	var Util = {
-		getBackgroundImage: function() {
+		getBackgroundImage: function () {
 			var platform = "desktop";
 
 			for (var pltfrm in Platform) {
@@ -26,7 +26,7 @@
 			return Terrain.images[platform];
 		},
 
-		getScale: function(originalValue, currentValue) {
+		getScale: function (originalValue, currentValue) {
 			return (
 				(originalValue > currentValue ? -1 : 1) *
 				(Math.min(originalValue, currentValue) /
@@ -34,7 +34,7 @@
 			);
 		},
 
-		randomize: function(array) {
+		randomize: function (array) {
 			var currentIndex = array.length,
 				temporaryValue,
 				randomIndex;
@@ -326,11 +326,11 @@
 
 		displacementX: 0,
 
-		getStartPosition: function() {
+		getStartPosition: function () {
 			return [0, Bike.positions[Game.platform][1] * bgImage.clientHeight];
 		},
 
-		setToNormal: function() {
+		setToNormal: function () {
 			var bike = Bike.container;
 			Bike.orientation = "normal";
 
@@ -344,7 +344,7 @@
 				"px";
 		},
 
-		sway: function() {
+		sway: function () {
 			var bikeContainer = Bike.container;
 
 			var path = Bike.paths[Game.platform][Game.level - 1];
@@ -362,7 +362,7 @@
 			Bike.turn(path.displacement, path.direction);
 		},
 
-		turn: function(displacement, direction) {
+		turn: function (displacement, direction) {
 			Bike.position = [
 				direction === "left"
 					? -(displacement * bgImage.clientWidth)
@@ -384,9 +384,9 @@
 			});
 		},
 
-		moveToFinish() {},
+		moveToFinish() { },
 
-		renderOnStartPosition: function() {
+		renderOnStartPosition: function () {
 			var startPos = Bike.getStartPosition();
 			Bike.position = [startPos[0], startPos[1]];
 			var bike = Bike.container;
@@ -411,7 +411,7 @@
 			Game.arena.appendChild(bike);
 		},
 
-		render: function() {
+		render: function () {
 			if (Game.background) {
 				Bike.renderOnStartPosition();
 			} else {
@@ -436,7 +436,7 @@
 
 		scale: 1,
 
-		render: function() {
+		render: function () {
 			Game.arena.appendChild(bgImage);
 
 			Terrain.scale = Util.getScale(
@@ -447,81 +447,81 @@
 
 			var startPos = -(bgImage.height - vh);
 			Terrain.position = startPos;
-            bgImage.style.transform = "translate(0px, " + startPos + "px)";
-            setTimeout(Timer.showCountdown, 1000);
+			bgImage.style.transform = "translate(0px, " + startPos + "px)";
+			setTimeout(Timer.showCountdown, 1000);
 		}
 	};
 
 	var Timer = {
 		time: {
-            hours: 0,
-            minutes: 0,
-            seconds: 0
-        },
+			hours: 0,
+			minutes: 0,
+			seconds: 0
+		},
 
-        currentQuestionTime: 0,
+		currentQuestionTime: 0,
 
-        container: document.querySelector(".timer-counter"),
+		container: document.querySelector(".timer-counter"),
 
-        timeoutHandle: null,
+		timeoutHandle: null,
 
-        showCountdown: function() {
-            var timer = Timer.container;
-            timer.textContent = 3;
+		showCountdown: function () {
+			var timer = Timer.container;
+			timer.textContent = 3;
 
-            function change(i) {
-                return function() { 
-                    timer.textContent = i !== 0 ? ( i !== 1 ? i - 1 : "GO!" ) : "";
-                    if ( i === 0 ) {
-                        Game.run();
-                    } 
-                };
-            }
+			function change(i) {
+				return function () {
+					timer.textContent = i !== 0 ? (i !== 1 ? i - 1 : "GO!") : "";
+					if (i === 0) {
+						Game.run();
+					}
+				};
+			}
 
-            for(var i = 3; i >= 0; i--) {
-                var changeFunction = change(i);
-                setTimeout(changeFunction, ( 3 - ( i - 1) ) * 1000);
-            };
-        },
-        
-        add: function(penalty) {
-            var seconds = Timer.time.seconds;
-            var minutes = Timer.time.minutes;
-            var hours = Timer.time.hours;
-            if ( !penalty ) {
-                seconds++;
-            } else {
-                seconds += 15;
-            }
-            if (seconds >= 60) {
-                seconds = seconds % 60;
-                minutes++;
-                if (minutes >= 60) {
-                    minutes = 0;
-                    hours++;
-                }
-            }
-            Timer.time = {
-                seconds: seconds,
-                minutes: minutes,
-                hours: hours
-            };
-            Timer.container.textContent = Timer.getTime();
-            if ( Game.status === "pausedForQuestion" ) {
-                Timer.timeoutHandle = setTimeout(Timer.add, 1000);
-            }
-        },
+			for (var i = 3; i >= 0; i--) {
+				var changeFunction = change(i);
+				setTimeout(changeFunction, (3 - (i - 1)) * 1000);
+			};
+		},
 
-        getTime: function() {
-            var seconds = Timer.time.seconds;
-            var minutes = Timer.time.minutes;
-            var hours = Timer.time.hours;
-            return (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
-        },
+		add: function (penalty) {
+			var seconds = Timer.time.seconds;
+			var minutes = Timer.time.minutes;
+			var hours = Timer.time.hours;
+			if (!penalty) {
+				seconds++;
+			} else {
+				seconds += 15;
+			}
+			if (seconds >= 60) {
+				seconds = seconds % 60;
+				minutes++;
+				if (minutes >= 60) {
+					minutes = 0;
+					hours++;
+				}
+			}
+			Timer.time = {
+				seconds: seconds,
+				minutes: minutes,
+				hours: hours
+			};
+			Timer.container.textContent = Timer.getTime();
+			if (Game.status === "pausedForQuestion") {
+				Timer.timeoutHandle = setTimeout(Timer.add, 1000);
+			}
+		},
 
-		reset: function() {
+		getTime: function () {
+			var seconds = Timer.time.seconds;
+			var minutes = Timer.time.minutes;
+			var hours = Timer.time.hours;
+			return (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+		},
+
+		reset: function () {
 			Timer.time = 0;
-        }
+		}
 	};
 
 	var Game = {
@@ -546,49 +546,49 @@
 			terrain: false,
 			bike: false,
 			submit: false
-        },
-        
-        restartAttempts: 0,
+		},
 
-        status: "countingDown",
+		restartAttempts: 0,
 
-		fetchQuestions: function() {
+		status: "countingDown",
+
+		fetchQuestions: function () {
 			Data.fetch("/userData").then(
-				function(response) {
+				function (response) {
 					Game.userData = response.userInfo.shift();
-                    Game.questions = Util.randomize(response.userInfo);
-                    Game.selectRider(Game.userData.riderName);
+					Game.questions = Util.randomize(response.userInfo);
+					Game.selectRider(Game.userData.riderName);
 				},
-				function(err) {
+				function (err) {
 					Game.error.questions = true;
 					/** TODO: Handle error */
 				}
 			);
 		},
 
-		run: function() {
+		run: function () {
 			if (
 				!Game.error.questions &&
 				!Game.error.terrain &&
 				!Game.error.bike
 			) {
-                Timer.container.textContent = "00:00:00";
-                Game.status = "running";
+				Timer.container.textContent = "00:00:00";
+				Game.status = "running";
 				Game.firstLevel();
 			} else {
-                if ( Game.restartAttempts < 10 ) {
-                    setTimeout(Game.run, 1000);
-                } else {
-                    /** TODO: Handle errors */
-                }
+				if (Game.restartAttempts < 10) {
+					setTimeout(Game.run, 1000);
+				} else {
+					/** TODO: Handle errors */
+				}
 			}
 		},
 
-		checkAnswer: function(answer) {
+		checkAnswer: function (answer) {
 			if (answer) {
 				setTimeout(Timer.end, 0);
 			} else {
-				setTimeout(function() {
+				setTimeout(function () {
 					Timer.end();
 					Timer.penalty();
 				}, 0);
@@ -596,13 +596,13 @@
 			Game.levelUp();
 		},
 
-		showQuestion: function() {
-            Game.status = "pausedForQuestion";
+		showQuestion: function () {
+			Game.status = "pausedForQuestion";
 			Question.show();
 			// setTimeout(Timer.start, 0);
 		},
 
-		firstLevel: function() {
+		firstLevel: function () {
 			var yPos = -(bgImage.clientHeight - Terrain.step);
 			Terrain.position = yPos;
 			setTimeout(
@@ -619,7 +619,7 @@
 			// TweenMax.to(bgImage, 3, { ease: Terrain.easeAnimation, css: { transform: "translate(0px, " + yPos + "px)" }, onComplete: function(){} });
 		},
 
-		levelUp: function() {
+		levelUp: function () {
 			if (Game.level === 11) {
 				return false;
 			}
@@ -648,28 +648,28 @@
 			Game.level++;
 		},
 
-		reset: function() {
+		reset: function () {
 			console.log("resetting");
 			Terrain.render();
 		},
 
-		selectRider: function(riderName) {
-            Bike.selectedRider = riderName === "CS Santosh" ? 0 : 1;
-            Bike.render();
+		selectRider: function (riderName) {
+			Bike.selectedRider = riderName === "CS Santosh" ? 0 : 1;
+			Bike.render();
 		},
 
-		complete: function() {
-            var formData = new FormData();
-            formData.set("userId", Game.userData.userId);
-            formData.set("time", Timer.getTime());
-			
+		complete: function () {
+			var formData = new FormData();
+			formData.set("userId", Game.userData.userId);
+			formData.set("time", Timer.getTime());
+
 			Data.post("/getscoredetails", formData).then(
-				function(response) {
-                    if ( response !== submit ) {
-                        /** TODO: Handle submit error */
-                    }
-                },
-				function(error) {
+				function (response) {
+					if (response !== submit) {
+						/** TODO: Handle submit error */
+					}
+				},
+				function (error) {
 					Game.error.submit = true;
 					/** TODO: Handle submit error */
 				}
@@ -680,11 +680,11 @@
 	var Data = {
 		endpoint: "http://com.22feetlabs.com/heroBikeGame/api",
 
-		fetch: function(url) {
-			return new Promise(function(resolve, reject) {
+		fetch: function (url) {
+			return new Promise(function (resolve, reject) {
 				var xmlhttp = new XMLHttpRequest();
 
-				xmlhttp.onreadystatechange = function() {
+				xmlhttp.onreadystatechange = function () {
 					if (xmlhttp.readyState == XMLHttpRequest.DONE) {
 						if (xmlhttp.status == 200) {
 							try {
@@ -715,11 +715,11 @@
 			});
 		},
 
-		post: function(url, data) {
-			return new Promise(function(resolve, reject) {
+		post: function (url, data) {
+			return new Promise(function (resolve, reject) {
 				var xmlhttp = new XMLHttpRequest();
 
-				xmlhttp.onreadystatechange = function() {
+				xmlhttp.onreadystatechange = function () {
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 						console.log(xmlhttp.responseText);
 					}
@@ -764,13 +764,13 @@
 			.from(".question-content-wrap-bg", 0.5, { height: 0, opacity: 0, onComplete: Timer.add })
 			.from(".question-copy", 0.3, { opacity: 0 })
 			.staggerFrom(
-				".question-options",
-				0.3,
-				{ opacity: 0, scale: 0.8 },
-				0.2
+			".question-options",
+			0.3,
+			{ opacity: 0, scale: 0.8, ease: Bounce.easeOut },
+			0.2
 			),
 
-		show: function() {
+		show: function () {
 			var question = (Question.currentQuestion =
 				Game.questions[Game.level - 1]);
 			Question.questionNumberContainer.innerHTML =
@@ -781,29 +781,29 @@
 			Question.tween.play();
 		},
 
-		listeners: function() {
+		listeners: function () {
 			document
 				.querySelectorAll(".question-options")
-				.forEach(function(element, index) {
-					element.addEventListener("click", function(e) {
+				.forEach(function (element, index) {
+					element.addEventListener("click", function (e) {
 						var option = e.target.classList[1]; // the second class name is the option selected
-                        var answer = Question.checkAnswer(option);
-                        clearTimeout(Timer.timeoutHandle);
-                        Game.status = "running";
+						var answer = Question.checkAnswer(option);
+						clearTimeout(Timer.timeoutHandle);
+						Game.status = "running";
 						Question.hide();
 						if (!answer) {
-                            Timer.add(true); // first argument of Timer.add() is penalty
+							Timer.add(true); // first argument of Timer.add() is penalty
 						}
 						Game.levelUp();
 					});
 				});
 		},
 
-		hide: function() {
+		hide: function () {
 			Question.tween.reverse();
 		},
 
-		checkAnswer: function(option) {
+		checkAnswer: function (option) {
 			var answer =
 				Game.userData.riderName === Question.currentQuestion.riderName
 					? "a"
@@ -812,20 +812,20 @@
 		}
 	};
 
-	bgImage.onload = function() {
+	bgImage.onload = function () {
 		Game.background = true;
 		Terrain.render();
 	};
-	bgImage.onerror = function() {
+	bgImage.onerror = function () {
 		Game.error.terrain = true;
 	};
 	bgImage.src = Util.getBackgroundImage();
 	bgImage.className = "terrain";
 
-	bikeAtlas.onload = function() {
+	bikeAtlas.onload = function () {
 		Game.bike = true;
 	};
-	bikeAtlas.onerror = function() {
+	bikeAtlas.onerror = function () {
 		Game.error.bike = true;
 	};
 	bikeAtlas.className = "bike";
@@ -833,4 +833,8 @@
 
 	Game.fetchQuestions();
 	Question.listeners();
+
+
+
+	TweenMax.to(".popup-wrap", .5, { autoAlpha: 1, display: "block", delay: .5 });
 })();
