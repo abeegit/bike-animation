@@ -270,10 +270,11 @@ header {
   font-style: italic;
   font-weight: 300;
 }
+
 @media only screen and (max-width: 1500px) {
-	.question-copy {
-		font-size: 25px;
-	}
+  .question-copy {
+    font-size: 25px;
+  }
 }
 
 @media only screen and (max-width: 00px) {
@@ -863,48 +864,78 @@ header {
   padding: 60px 40px;
   text-align: center;
   min-height: 600px;
-  position: relative; }
-  @media only screen and (max-width: 1500px) {
-    .popup-content-wrap {
-      padding: 40px 30px;
-      min-height: 500px; } }
-  @media only screen and (max-width: 768px) {
-    .popup-content-wrap {
-      min-height: 400px;
-      padding: 30px 20px; } }
-  @media only screen and (max-width: 514px) {
-    .popup-content-wrap {
-      padding: 20px; } }
+  position: relative;
+}
 
-      .popup-content-wrap .center-align{
-          padding: 0px 40px;
-          -webkit-transform: translate(-50%, -50%);
-          -moz-transform: translate(-50%, -50%);
-          -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-      }
+@media only screen and (max-width: 1500px) {
+  .popup-content-wrap {
+    padding: 40px 30px;
+    min-height: 500px;
+  }
+}
 
-        @media only screen and (max-width: 1500px) {
-    .popup-content-wrap .center-alig{
-      padding: 0px 30px;
-      } }
-  @media only screen and (max-width: 768px) {
-    .popup-content-wrap .center-align{
-     padding: 0px 20px;
-      } }
-  
-.popup-content-wrap .section-title{
+@media only screen and (max-width: 768px) {
+  .popup-content-wrap {
+    min-height: 400px;
+    padding: 30px 20px;
+  }
+}
+
+@media only screen and (max-width: 514px) {
+  .popup-content-wrap {
+    padding: 20px;
+  }
+}
+
+.popup-content-wrap .center-align {
+  padding: 0px 40px;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+@media only screen and (max-width: 1500px) {
+  .popup-content-wrap .center-alig {
+    padding: 0px 30px;
+  }
+}
+
+.loading {
+  font-size: 25px;
+  position: fixed;
+  left: 50%;
+  bottom: 50%;
+  text-transform: uppercase;
+  font-family: "'Kanit', sans-serif";
+  font-style: italic;
+  font-weight: 900;
+  transform: translateX(-50%);
+}
+
+@media only screen and (max-width: 768px) {
+  .popup-content-wrap .center-align {
+    padding: 0px 20px;
+  }
+  .loading {
+    font-size: 20px;
+  }
+}
+
+.popup-content-wrap .section-title {
   font-weight: 900;
   font-style: italic;
   text-transform: uppercase;
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
-.fb-share-btn{
-  margin-top:20px;
+
+.fb-share-btn {
+  margin-top: 20px;
 }
-      span.fb-icon-wrap {
-    display: inline-block;
-    max-width: 27px;
-    vertical-align: text-bottom;
-    margin-right: 10px;
-} 
+
+span.fb-icon-wrap {
+  display: inline-block;
+  max-width: 27px;
+  vertical-align: text-bottom;
+  margin-right: 10px;
+}

@@ -90,7 +90,7 @@
 					duration: 2,
 					displacement: 0.25,
 					direction: "left"
-				}, //1
+				},
 				{
 					delay: 1.5,
 					duration: 2,
@@ -102,14 +102,14 @@
 					duration: 2,
 					displacement: 0.102,
 					direction: "left"
-				}, //3
+				},
 				{
 					delay: 0.5,
 					duration: 2,
 					displacement: 0.102,
 					direction: "right"
 				},
-				{ direction: "normal" }, //5
+				{ direction: "normal" },
 				{
 					delay: 1.3,
 					duration: 2,
@@ -121,7 +121,7 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "right"
-				}, //7
+				},
 				{
 					delay: 1.3,
 					duration: 2,
@@ -133,12 +133,12 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "right"
-				}, //9
+				},
 				{ direction: "normal" },
-				{ direction: "normal" } //11
+				{ direction: "normal" }
 			],
 			tablet: [
-				{ delay: 1, duration: 2, displacement: 0.1, direction: "left" }, //1
+				{ delay: 1, duration: 2, displacement: 0.1, direction: "left" },
 				{
 					delay: 1.8,
 					duration: 2,
@@ -150,7 +150,7 @@
 					duration: 2,
 					displacement: 0.102,
 					direction: "left"
-				}, //3
+				},
 				{
 					delay: 1,
 					duration: 2,
@@ -162,7 +162,7 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "left"
-				}, //5
+				},
 				{
 					delay: 1.3,
 					duration: 2,
@@ -174,7 +174,7 @@
 					duration: 2,
 					displacement: 0.005,
 					direction: "right"
-				}, //7
+				},
 				{
 					delay: 1.3,
 					duration: 2,
@@ -186,9 +186,9 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "right"
-				}, //9
+				},
 				{ direction: "normal" },
-				{ direction: "normal" } //11
+				{ direction: "normal" }
 			],
 			desktop: [
 				{
@@ -196,7 +196,7 @@
 					duration: 2,
 					displacement: 0.1,
 					direction: "left"
-				}, //1
+				},
 				{
 					delay: 1.8,
 					duration: 2,
@@ -208,7 +208,7 @@
 					duration: 2,
 					displacement: 0.102,
 					direction: "left"
-				}, //3
+				},
 				{
 					delay: 1,
 					duration: 2,
@@ -220,7 +220,7 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "left"
-				}, //5
+				},
 				{
 					delay: 1.3,
 					duration: 2,
@@ -232,7 +232,7 @@
 					duration: 2,
 					displacement: 0.002,
 					direction: "right"
-				}, //7
+				},
 				{
 					delay: 1.3,
 					duration: 2,
@@ -244,14 +244,14 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "right"
-				}, //9
+				},
 				{
 					delay: 1.3,
 					duration: 2,
 					displacement: 0.05,
 					direction: "left"
 				},
-				{ direction: "normal" } //11
+				{ direction: "normal" }
 			],
 			largeDesktop: [
 				{
@@ -271,7 +271,7 @@
 					duration: 2,
 					displacement: 0.102,
 					direction: "left"
-				}, //3
+				},
 				{
 					delay: 1,
 					duration: 2,
@@ -283,7 +283,7 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "left"
-				}, //5
+				},
 				{
 					delay: 1.3,
 					duration: 2,
@@ -295,7 +295,7 @@
 					duration: 2,
 					displacement: 0.002,
 					direction: "right"
-				}, //7
+				},
 				{
 					delay: 1.3,
 					duration: 2,
@@ -307,14 +307,14 @@
 					duration: 2,
 					displacement: 0.05,
 					direction: "right"
-				}, //9
+				},
 				{
 					delay: 1.3,
 					duration: 2,
 					displacement: 0.05,
 					direction: "left"
 				},
-				{ direction: "normal" } //11
+				{ direction: "normal" }
 			]
 		},
 
@@ -467,7 +467,7 @@
 
 		timeoutHandle: null,
 
-		show: function() {
+		show: function () {
 			TweenMax.to(".timer-wrap", 0.5, { autoAlpha: 1, display: "block", delay: 0.5 });
 		},
 
@@ -558,16 +558,17 @@
 
 		status: "loading",
 
-		loading: function() {
+		loading: function () {
 			var container = document.querySelector(".loading");
 			var text = container.textContent;
-            var dotsCount = ((text).match(/\./g)).length;
-            console.log(dotsCount);
-			setTimeout(function() {
-				text = dotsCount !== 3 ? text + "." : "loading.";
-                container.textContent = text;
-                Game.loading();
-			}, 1000);
+			var dotsCount = ((text).match(/\./g)).length;
+			if (Game.status === "loading") {
+				setTimeout(function () {
+					text = dotsCount !== 3 ? text + "." : "Loading.";
+					container.textContent = text;
+					Game.loading();
+				}, 1000);
+			}
 		},
 
 		fetchQuestions: function () {
@@ -632,8 +633,6 @@
 				css: { transform: "translate(0px, " + yPos + "px)" },
 				onComplete: Game.showQuestion
 			});
-			// TweenMax.to(bgImage, 3, { ease: Terrain.easeAnimation, css: { transform: "translate(0px, " + yPos + "px)" }, onComplete: Game.levelUp });
-			// TweenMax.to(bgImage, 3, { ease: Terrain.easeAnimation, css: { transform: "translate(0px, " + yPos + "px)" }, onComplete: function(){} });
 		},
 
 		levelUp: function () {
@@ -659,8 +658,6 @@
 					css: { transform: "translate(0px, " + yPos + "px)" },
 					onComplete: Game.showQuestion
 				});
-				// TweenMax.to(bgImage, 4, { ease: Terrain.easeAnimation, css: { transform: "translate(0px, " + yPos + "px)" }, onComplete: Game.levelUp });
-				// TweenMax.to(bgImage, 4, { ease: Terrain.easeAnimation, css: { transform: "translate(0px, " + yPos + "px)" }, onComplete: function() {} });
 			}
 			Game.level++;
 		},
@@ -682,7 +679,7 @@
 
 			Data.post("/getscoredetails", formData).then(
 				function (response) {
-					if (response !== submit) {
+					if (response !== "success") {
 						/** TODO: Handle submit error */
 					} else {
 						Popup.show();
@@ -740,7 +737,7 @@
 
 				xmlhttp.onreadystatechange = function () {
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						console.log(xmlhttp.responseText);
+						resolve(xmlhttp.responseText);
 					}
 				};
 
@@ -791,10 +788,10 @@
 				.from(".question-content-wrap-bg", 0.5, { height: 0, opacity: 0, onComplete: Timer.add })
 				.from(".question-copy", 0.3, { opacity: 0 })
 				.staggerFrom(
-				".question-options",
-				0.3,
-				{ opacity: 0, scale: 0.8, ease: Bounce.easeOut },
-				0.2
+					".question-options",
+					0.3,
+					{ opacity: 0, scale: 0.8, ease: Bounce.easeOut },
+					0.2
 				);
 		},
 
@@ -818,21 +815,21 @@
 
 		hide: function () {
 			new TimelineLite()
-				.to(".question-popup", 0.5, {
+				.to(".question-popup", 0.3, {
 					autoAlpha: 0,
 					y: "0%",
 					opacity: 0,
 					display: "none",
 					zIndex: 0
 				})
-				.from(".question-content-wrap", 0.1, { opacity: 1 })
-				.from(".question-content-wrap-bg", 0.1, { opacity: 1 })
-				.from(".question-copy", 0.15, { opacity: 1 })
+				.from(".question-content-wrap", 0.3, { opacity: 1 })
+				.from(".question-content-wrap-bg", 0.3, { opacity: 1 })
+				.from(".question-copy", 0.2, { opacity: 1 })
 				.staggerFrom(
-				".question-options",
-				0.1,
-				{ opacity: 1, scale: 0.8, ease: Bounce.easeOut },
-				0.2
+					".question-options",
+					0.2,
+					{ opacity: 1, scale: 0.8, ease: Bounce.easeOut },
+					0.2
 				);
 		},
 
@@ -849,6 +846,7 @@
 		container: document.querySelector(".popup-wrap"),
 
 		show: function () {
+			Popup.container.querySelector(".text-copy").textContent = "I've completed the HeroMotoSports #Merzouga2018 Challenge in " + Timer.getTime() + "! Can you beat my record? Take the challenge now.";
 			TweenMax.to(Popup.container, 0.5, { autoAlpha: 1, display: "block", delay: 0.5 });
 		},
 
@@ -859,7 +857,7 @@
 
 	bgImage.onload = function () {
 		Game.background = true;
-		// Terrain.render();
+		Terrain.render();
 	};
 	bgImage.onerror = function () {
 		Game.error.terrain = true;
