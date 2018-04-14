@@ -449,6 +449,7 @@
 			Terrain.position = startPos;
 			bgImage.style.transform = "translate(0px, " + startPos + "px)";
 			Game.status = "countingDown";
+			Timer.show();
 			setTimeout(Timer.showCountdown, 1000);
 		}
 	};
@@ -465,6 +466,10 @@
 		container: document.querySelector(".timer-counter"),
 
 		timeoutHandle: null,
+
+		show: function() {
+			TweenMax.to(".timer-wrap", 0.5, { autoAlpha: 1, display: "block", delay: 0.5 });
+		},
 
 		showCountdown: function () {
 			var timer = Timer.container;
@@ -552,6 +557,18 @@
 		restartAttempts: 0,
 
 		status: "loading",
+
+		loading: function() {
+			var container = document.querySelector(".loading");
+			var text = container.textContent;
+            var dotsCount = ((text).match(/\./g)).length;
+            console.log(dotsCount);
+			setTimeout(function() {
+				text = dotsCount !== 3 ? text + "." : "loading.";
+                container.textContent = text;
+                Game.loading();
+			}, 1000);
+		},
 
 		fetchQuestions: function () {
 			Data.fetch("/userData").then(
@@ -842,7 +859,7 @@
 
 	bgImage.onload = function () {
 		Game.background = true;
-		Terrain.render();
+		// Terrain.render();
 	};
 	bgImage.onerror = function () {
 		Game.error.terrain = true;
@@ -859,6 +876,7 @@
 	bikeAtlas.className = "bike";
 	bikeAtlas.src = Bike.image;
 
+	Game.loading();
 	Game.fetchQuestions();
 	Question.listeners();
 
