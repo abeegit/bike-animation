@@ -448,6 +448,7 @@
 			var startPos = -(bgImage.height - vh);
 			Terrain.position = startPos;
 			bgImage.style.transform = "translate(0px, " + startPos + "px)";
+			Game.status = "countingDown";
 			setTimeout(Timer.showCountdown, 1000);
 		}
 	};
@@ -550,7 +551,7 @@
 
 		restartAttempts: 0,
 
-		status: "countingDown",
+		status: "loading",
 
 		fetchQuestions: function () {
 			Data.fetch("/userData").then(
@@ -599,7 +600,6 @@
 		showQuestion: function () {
 			Game.status = "pausedForQuestion";
 			Question.show();
-			// setTimeout(Timer.start, 0);
 		},
 
 		firstLevel: function () {
@@ -667,6 +667,8 @@
 				function (response) {
 					if (response !== submit) {
 						/** TODO: Handle submit error */
+					} else {
+						Popup.show();
 					}
 				},
 				function (error) {
@@ -752,24 +754,6 @@
 			b: document.querySelector(".question-options.b")
 		},
 
-		tween: new TimelineLite({ paused: true })
-			.to(".question-popup", 0.5, {
-				autoAlpha: 1,
-				y: "0%",
-				opacity: 1,
-				display: "block",
-				zIndex: 2
-			})
-			.from(".question-content-wrap", 0.4, { opacity: 0 })
-			.from(".question-content-wrap-bg", 0.5, { height: 0, opacity: 0, onComplete: Timer.add })
-			.from(".question-copy", 0.3, { opacity: 0 })
-			.staggerFrom(
-			".question-options",
-			0.3,
-			{ opacity: 0, scale: 0.8, ease: Bounce.easeOut },
-			0.2
-			),
-
 		show: function () {
 			var question = (Question.currentQuestion =
 				Game.questions[Game.level - 1]);
@@ -778,7 +762,23 @@
 			Question.questionContainer.innerHTML = question.question;
 			Question.optionsContainers.a.innerHTML = question.optionA;
 			Question.optionsContainers.b.innerHTML = question.optionB;
-			Question.tween.play();
+			new TimelineLite()
+				.to(".question-popup", 0.5, {
+					autoAlpha: 1,
+					y: "0%",
+					opacity: 1,
+					display: "block",
+					zIndex: 2
+				})
+				.from(".question-content-wrap", 0.4, { opacity: 0 })
+				.from(".question-content-wrap-bg", 0.5, { height: 0, opacity: 0, onComplete: Timer.add })
+				.from(".question-copy", 0.3, { opacity: 0 })
+				.staggerFrom(
+				".question-options",
+				0.3,
+				{ opacity: 0, scale: 0.8, ease: Bounce.easeOut },
+				0.2
+				);
 		},
 
 		listeners: function () {
@@ -800,7 +800,23 @@
 		},
 
 		hide: function () {
-			Question.tween.reverse();
+			new TimelineLite()
+				.to(".question-popup", 0.5, {
+					autoAlpha: 0,
+					y: "0%",
+					opacity: 0,
+					display: "none",
+					zIndex: 0
+				})
+				.from(".question-content-wrap", 0.1, { opacity: 1 })
+				.from(".question-content-wrap-bg", 0.1, { opacity: 1 })
+				.from(".question-copy", 0.15, { opacity: 1 })
+				.staggerFrom(
+				".question-options",
+				0.1,
+				{ opacity: 1, scale: 0.8, ease: Bounce.easeOut },
+				0.2
+				);
 		},
 
 		checkAnswer: function (option) {
@@ -809,6 +825,18 @@
 					? "a"
 					: "b";
 			return option === answer;
+		}
+	};
+
+	var Popup = {
+		container: document.querySelector(".popup-wrap"),
+
+		show: function () {
+			TweenMax.to(Popup.container, 0.5, { autoAlpha: 1, display: "block", delay: 0.5 });
+		},
+
+		hide: function () {
+			TweenMax.to(Popup.container, 0.5, { autoAlpha: 0, display: "none", delay: 0.5 });
 		}
 	};
 
@@ -834,7 +862,6 @@
 	Game.fetchQuestions();
 	Question.listeners();
 
+	window.Popup = Popup;
 
-
-	TweenMax.to(".popup-wrap", .5, { autoAlpha: 1, display: "block", delay: .5 });
 })();
