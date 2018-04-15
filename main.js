@@ -522,6 +522,7 @@
 		penalty: function() {
 			var penaltyTween = new TimelineLite();
 			penaltyTween.to(".penalty",.5,{opacity:1,scale:1,ease: Bounce.easeOut}).to(".penalty",1,{opacity:0,y:-40,delay:.3});
+			TweenMax.set(".penalty", {clearProps:"all"});
 		},
 
 		getTime: function () {
