@@ -344,25 +344,7 @@
 				"px";
 		},
 
-		sway: function () {
-			var bikeContainer = Bike.container;
-
-			var path = Bike.paths[Game.platform][Game.level - 1];
-			var direction = path.direction;
-			bikeContainer.style.background =
-				"url(" +
-				Bike.image +
-				") " +
-				Bike.rider[Bike.selectedRider].image[direction][0] +
-				"px " +
-				Bike.rider[Bike.selectedRider].image[direction][1] +
-				"px";
-			bikeContainer.style.width = "121px";
-			bikeContainer.style.height = "188px";
-			Bike.turn(path.displacement, path.direction);
-		},
-
-		turn: function (displacement, direction) {
+		turn: function (displacement, direction, delay) {
 			Bike.position = [
 				direction === "left"
 					? -(displacement * bgImage.clientWidth)
@@ -370,6 +352,7 @@
 				0
 			];
 			TweenMax.to(Bike.container, 1.5, {
+				delay: delay,
 				css: {
 					transform:
 						"scale(" +
@@ -380,7 +363,18 @@
 						Bike.position[1] +
 						"px)"
 				},
-				onComplete: Bike.setToNormal
+				onComplete: Bike.setToNormal,
+				onStart: function() {
+					var bikeContainer = Bike.container;
+					bikeContainer.style.background =
+						"url(" +
+						Bike.image +
+						") " +
+						Bike.rider[Bike.selectedRider].image[direction][0] +
+						"px " +
+						Bike.rider[Bike.selectedRider].image[direction][1] +
+						"px";
+				}
 			});
 		},
 
@@ -577,6 +571,8 @@
 					Game.userData = response.userInfo.shift();
 					Game.questions = Util.randomize(response.userInfo);
 					Game.selectRider(Game.userData.riderName);
+
+					document.querySelector(".player-name").textContent = Game.userData.riderName;
 				},
 				function (err) {
 					Game.error.questions = true;
@@ -623,16 +619,16 @@
 		firstLevel: function () {
 			var yPos = -(bgImage.clientHeight - Terrain.step);
 			Terrain.position = yPos;
-			setTimeout(
-				Bike.sway,
-				Bike.paths[Game.platform][Game.level].delay * 1000
-			);
+			var path = Bike.paths[Game.platform][Game.level];
+			Bike.turn(path.displacement, path.direction, path.delay);
 			Game.level++;
 			TweenMax.to(bgImage, 3, {
 				ease: Terrain.easeAnimation,
 				css: { transform: "translate(0px, " + yPos + "px)" },
 				onComplete: Game.showQuestion
 			});
+
+			document.querySelector(".question-indicator").textContent = "Question " + Game.level + "/10";
 		},
 
 		levelUp: function () {
@@ -644,7 +640,7 @@
 			));
 			var path = Bike.paths[Game.platform][Game.level];
 			if (path.direction !== "normal") {
-				setTimeout(Bike.sway, path.delay * 1000);
+				Bike.turn(path.displacement, path.direction, path.delay);
 			}
 			if (Game.level === 10) {
 				TweenMax.to(bgImage, 4, {
@@ -660,6 +656,7 @@
 				});
 			}
 			Game.level++;
+			document.querySelector(".question-indicator").textContent = "Question " + Game.level + "/10";
 		},
 
 		reset: function () {
