@@ -378,7 +378,9 @@
 			});
 		},
 
-		moveToFinish() { },
+		moveToFinish: function() {
+			TweenMax.to(".bike", 3, { ease: Power1.easeInOut, css: { top: "100px" } });
+		},
 
 		renderOnStartPosition: function () {
 			var startPos = Bike.getStartPosition();
@@ -482,6 +484,10 @@
 				var changeFunction = change(i);
 				setTimeout(changeFunction, (3 - (i - 1)) * 1000);
 			};
+			var timerTween = new TimelineLite({paused:true});
+			timerTween.from(".timer-counter",.5,{opacity:0,scale:.5}).to(".timer-part-sides",.5,{backgroundPosition:"0px 0",ease: Linear.easeNone})
+			.to(".timer-copy",.5,{opacity:1,scale:1,ease: Back.easeOut})
+			timerTween.play();
 		},
 
 		add: function (penalty) {
@@ -572,7 +578,7 @@
 					Game.questions = Util.randomize(response.userInfo);
 					Game.selectRider(Game.userData.riderName);
 
-					document.querySelector(".player-name").textContent = Game.userData.riderName;
+					document.querySelector(".player-name").textContent = Game.userData.userName;
 				},
 				function (err) {
 					Game.error.questions = true;
@@ -646,7 +652,8 @@
 				TweenMax.to(bgImage, 4, {
 					ease: Terrain.easeAnimation,
 					css: { transform: "translate(0px, " + yPos + "px)" },
-					onComplete: Game.complete
+					onComplete: Game.complete,
+					onStart: Bike.moveToFinish
 				});
 			} else {
 				TweenMax.to(bgImage, 4, {
@@ -875,6 +882,8 @@
 	Game.fetchQuestions();
 	Question.listeners();
 
+	window.Game = Game;
 	window.Popup = Popup;
+	window.Bike = Bike;
 
 })();
