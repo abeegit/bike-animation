@@ -633,14 +633,16 @@
 			Terrain.position = yPos;
 			var path = Bike.paths[Game.platform][Game.level];
 			Bike.turn(path.displacement, path.direction, path.delay);
+			document.querySelector(".question-indicator").textContent = "Question " + ( Game.level ) + "/10";
 			Game.level++;
 			TweenMax.to(bgImage, 3, {
 				ease: Terrain.easeAnimation,
 				css: { transform: "translate(0px, " + yPos + "px)" },
-				onComplete: Game.showQuestion
+				onComplete: function() {
+					document.querySelector(".question-indicator").textContent = "Question " + ( Game.level ) + "/10";
+					Game.showQuestion();
+				}
 			});
-
-			document.querySelector(".question-indicator").textContent = "Question " + Game.level + "/10";
 		},
 
 		levelUp: function () {
@@ -665,11 +667,13 @@
 				TweenMax.to(bgImage, 4, {
 					ease: Terrain.easeAnimation,
 					css: { transform: "translate(0px, " + yPos + "px)" },
-					onComplete: Game.showQuestion
+					onComplete: function() {
+						document.querySelector(".question-indicator").textContent = "Question " + Game.level + "/10";
+						Game.showQuestion();
+					}
 				});
 			}
 			Game.level++;
-			document.querySelector(".question-indicator").textContent = "Question " + Game.level + "/10";
 		},
 
 		reset: function () {
