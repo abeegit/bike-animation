@@ -936,3 +936,18 @@ span.fb-icon-wrap {
   vertical-align: text-bottom;
   margin-right: 10px;
 }
+
+.timer-part-center {
+  position: relative;
+}
+
+.penalty {
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  opacity: 0;
+  -webkit-transform: scale(0.4);
+  -moz-transform: scale(0.4);
+  -ms-transform: scale(0.4);
+  transform: scale(0.4);
+}

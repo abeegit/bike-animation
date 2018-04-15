@@ -497,6 +497,7 @@
 			if (!penalty) {
 				seconds++;
 			} else {
+				Timer.penalty();
 				seconds += 15;
 			}
 			if (seconds >= 60) {
@@ -516,6 +517,11 @@
 			if (Game.status === "pausedForQuestion") {
 				Timer.timeoutHandle = setTimeout(Timer.add, 1000);
 			}
+		},
+
+		penalty: function() {
+			var penaltyTween = new TimelineLite();
+			penaltyTween.to(".penalty",.5,{opacity:1,scale:1,ease: Bounce.easeOut}).to(".penalty",1,{opacity:0,y:-40,delay:.3});
 		},
 
 		getTime: function () {
