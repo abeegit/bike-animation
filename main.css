@@ -202,7 +202,7 @@ body {
 	}
 }
 
-@media only screen and (max-width: 00px) {
+@media only screen and (max-width: 900px) {
   .question-copy {
     font-size: 16px;
     
@@ -211,7 +211,7 @@ body {
 
 @media only screen and (max-width: 514px) {
 	.question-copy {
-		font-size: 18px;
+		font-size: 14px;
 		margin-bottom: 20px;
 	}
 }
@@ -324,10 +324,29 @@ body {
     text-transform: uppercase;
     font-style: italic;
     position: relative;
-    z-index: 2; }
-    @media only screen and (max-width: 514px) {
+    z-index: 2;
+
+/*updated*/
+
+padding: 14px 20px;
+    height: 60px;
+    background-size: 100% 100%;
+    font-size: 24px;
+
+  
+     }
+
+
+     @media only screen and (max-width: 680px){
+        .popup-header-wrap{
+              font-size: 16px;
+    height: 40px;
+    padding: 8px 20px 8px;
+        }
+     }
+/*    @media only screen and (max-width: 514px) {
       .popup-header-wrap {
-        font-size: 20px; } }
+        font-size: 20px; } }*/
   
   .question-content-wrap {
     position: relative;
@@ -356,12 +375,17 @@ body {
     text-transform: uppercase;
     margin-bottom: 50px;
     line-height: 1.2; }
+
+     @media only screen and (max-width: 1600px) {
+      .question-copy {
+        font-size: 25px; } }
+
     @media only screen and (max-width: 1024px) {
       .question-copy {
         font-size: 25px; } }
     @media only screen and (max-width: 514px) {
       .question-copy {
-        font-size: 18px;
+        font-size: 16px;
         margin-bottom: 20px; } }
   
   .question-options {
@@ -726,21 +750,41 @@ body {
 
   @media only screen and (max-width: 1500px){
     .question-options{
-      font-size:22px;
+
+          padding: 10px 30px 55px;
+    background-size: 100% 100%;
+    height: 50px;
+      font-size:20px;
       padding-top:12px;
+
+
     }
   }
   
   
   @media only screen and (max-width: 900px){
     .question-options{
-      font-size:16px;
+
+            font-size: 16px;
+    height: 40px;
+    padding: 4px 15px 10px;
+
+
+
+    }
+  }
+
+  @media only screen and (max-width:680px){
+    .question-options{
+           font-size: 14px;
+    height: 30px;
+    padding: 3px 15px 10px;
     }
   }
   
-  @media only screen and (max-width: 680px){
+  @media only screen and (max-width: 514px){
     .question-options{
-      font-size:14px;
+      font-size:12px;
     }
   }
 
