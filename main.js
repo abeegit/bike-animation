@@ -522,6 +522,7 @@
 		penalty: function() {
 			var penaltyTween = new TimelineLite();
 			penaltyTween.to(".penalty",.5,{opacity:1,scale:1,ease: Bounce.easeOut}).to(".penalty",1,{opacity:0,y:-40,delay:.3});
+			TweenMax.set(".penalty", {clearProps:"all"});
 		},
 
 		getTime: function () {
@@ -548,6 +549,8 @@
 		bike: false,
 
 		level: 0,
+
+		checkpoints: 0,
 
 		questions: [],
 
@@ -633,13 +636,11 @@
 			Terrain.position = yPos;
 			var path = Bike.paths[Game.platform][Game.level];
 			Bike.turn(path.displacement, path.direction, path.delay);
-			document.querySelector(".question-indicator").textContent = "Question " + ( Game.level ) + "/10";
 			Game.level++;
 			TweenMax.to(bgImage, 3, {
 				ease: Terrain.easeAnimation,
 				css: { transform: "translate(0px, " + yPos + "px)" },
 				onComplete: function() {
-					document.querySelector(".question-indicator").textContent = "Question " + ( Game.level ) + "/10";
 					Game.showQuestion();
 				}
 			});
@@ -668,7 +669,6 @@
 					ease: Terrain.easeAnimation,
 					css: { transform: "translate(0px, " + yPos + "px)" },
 					onComplete: function() {
-						document.querySelector(".question-indicator").textContent = "Question " + Game.level + "/10";
 						Game.showQuestion();
 					}
 				});
@@ -682,7 +682,7 @@
 		},
 
 		selectRider: function (riderName) {
-			Bike.selectedRider = riderName === "CS Santosh" ? 0 : 1;
+			Bike.selectedRider = riderName === "CS Santosh" ? 1 : 0;
 			Bike.render();
 		},
 
@@ -690,6 +690,7 @@
 			var formData = new FormData();
 			formData.set("userId", Game.userData.userId);
 			formData.set("time", Timer.getTime());
+			formData.set("Checkpoints", Game.checkpoints);
 
 			Data.post("/getscoredetails", formData).then(
 				function (response) {
@@ -821,6 +822,9 @@
 						Question.hide();
 						if (!answer) {
 							Timer.add(true); // first argument of Timer.add() is penalty
+						} else {
+							Game.checkpoints++;
+							document.querySelector(".question-indicator").textContent = "Checkpoint " + ( Game.checkpoints ) + "/10";
 						}
 						Game.levelUp();
 					});
