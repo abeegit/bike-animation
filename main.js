@@ -498,7 +498,7 @@
 				seconds++;
 			} else {
 				Timer.penalty();
-				seconds += 15;
+				seconds += 30;
 			}
 			if (seconds >= 60) {
 				seconds = seconds % 60;
