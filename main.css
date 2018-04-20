@@ -952,3 +952,42 @@ span.fb-icon-wrap {
   -ms-transform: scale(0.4);
   transform: scale(0.4);
 }
+
+/* css update for microsecond */
+
+.timer-part-center {
+
+  font-size: 24px;
+  padding: 25px 50px 25px 30px;
+
+  max-width: 240px;
+}
+
+
+@media only screen and (max-width: 1024px){
+  .timer-part-center {
+    font-size: 19px;
+    padding: 18px 50px 0 30px;
+    max-width: 199px;
+}
+}
+
+
+@media only screen and (max-width: 680px){
+  .timer-part-center {
+    font-size: 14px;
+    padding: 15px 18px 20px 12px;
+    height: 54px;
+    max-width: 135px;
+}
+}
+
+
+@media only screen and (max-width: 480px){
+  .timer-part-center {
+    font-size: 12px;
+    padding: 10px 20px 10px 10px;
+    height: 44px;
+    max-width: 115px;
+}
+}

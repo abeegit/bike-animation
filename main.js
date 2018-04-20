@@ -1,4 +1,4 @@
-(function () {
+(function() {
 	var bgImage = new Image(),
 		bikeAtlas = new Image(),
 		vh = window.innerHeight;
@@ -13,7 +13,7 @@
 	};
 
 	var Util = {
-		getBackgroundImage: function () {
+		getBackgroundImage: function() {
 			var platform = "desktop";
 
 			for (var pltfrm in Platform) {
@@ -26,7 +26,7 @@
 			return Terrain.images[platform];
 		},
 
-		getScale: function (originalValue, currentValue) {
+		getScale: function(originalValue, currentValue) {
 			return (
 				(originalValue > currentValue ? -1 : 1) *
 				(Math.min(originalValue, currentValue) /
@@ -34,7 +34,7 @@
 			);
 		},
 
-		randomize: function (array) {
+		randomize: function(array) {
 			var currentIndex = array.length,
 				temporaryValue,
 				randomIndex;
@@ -49,6 +49,33 @@
 			}
 
 			return array;
+		},
+
+		pad(num, size) {
+			var s = "0000" + num;
+			return s.substr(s.length - size);
+		},
+
+		formatTime(time) {
+			var h = (m = s = ms = 0);
+			var newTime = "";
+
+			h = Math.floor(time / (60 * 60 * 1000));
+			time = time % (60 * 60 * 1000);
+			m = Math.floor(time / (60 * 1000));
+			time = time % (60 * 1000);
+			s = Math.floor(time / 1000);
+			ms = time % 1000;
+
+			newTime =
+				Util.pad(h, 2) +
+				":" +
+				Util.pad(m, 2) +
+				":" +
+				Util.pad(s, 2) +
+				":" +
+				Util.pad(ms, 3);
+			return newTime;
 		}
 	};
 
@@ -326,11 +353,11 @@
 
 		displacementX: 0,
 
-		getStartPosition: function () {
+		getStartPosition: function() {
 			return [0, Bike.positions[Game.platform][1] * bgImage.clientHeight];
 		},
 
-		setToNormal: function () {
+		setToNormal: function() {
 			var bike = Bike.container;
 			Bike.orientation = "normal";
 
@@ -344,7 +371,7 @@
 				"px";
 		},
 
-		turn: function (displacement, direction, delay) {
+		turn: function(displacement, direction, delay) {
 			Bike.position = [
 				direction === "left"
 					? -(displacement * bgImage.clientWidth)
@@ -379,10 +406,13 @@
 		},
 
 		moveToFinish: function() {
-			TweenMax.to(".bike", 3, { ease: Power1.easeInOut, css: { top: "100px" } });
+			TweenMax.to(".bike", 3, {
+				ease: Power1.easeInOut,
+				css: { top: "100px" }
+			});
 		},
 
-		renderOnStartPosition: function () {
+		renderOnStartPosition: function() {
 			var startPos = Bike.getStartPosition();
 			Bike.position = [startPos[0], startPos[1]];
 			var bike = Bike.container;
@@ -407,7 +437,7 @@
 			Game.arena.appendChild(bike);
 		},
 
-		render: function () {
+		render: function() {
 			if (Game.background) {
 				Bike.renderOnStartPosition();
 			} else {
@@ -432,7 +462,7 @@
 
 		scale: 1,
 
-		render: function () {
+		render: function() {
 			Game.arena.appendChild(bgImage);
 
 			Terrain.scale = Util.getScale(
@@ -450,30 +480,66 @@
 		}
 	};
 
+	var Stopwatch = function() {
+		var startAt = 0;
+		var lapTime = 0;
+
+		var now = function() {
+			return new Date().getTime();
+		};
+
+		this.start = function() {
+			startAt = startAt ? startAt : now();
+		};
+
+		this.stop = function() {
+			lapTime = startAt ? lapTime + now() - startAt : lapTime;
+			startAt = 0;
+		};
+
+		this.reset = function() {
+			lapTime = startAt = 0;
+		};
+
+		this.add = function() {
+			lapTime += 30000;
+		}
+
+		this.time = function() {
+			return lapTime + (startAt ? now() - startAt : 0);
+		};
+	};
+
+	var stopwatch = new Stopwatch();
+
 	var Timer = {
 		time: {
 			hours: 0,
 			minutes: 0,
-			seconds: 0
+			seconds: 0,
+			milliseconds: 0
 		},
-
-		currentQuestionTime: 0,
 
 		container: document.querySelector(".timer-counter"),
 
 		timeoutHandle: null,
 
-		show: function () {
-			TweenMax.to(".timer-wrap", 0.5, { autoAlpha: 1, display: "block", delay: 0.5 });
+		show: function() {
+			TweenMax.to(".timer-wrap", 0.5, {
+				autoAlpha: 1,
+				display: "block",
+				delay: 0.5
+			});
 		},
 
-		showCountdown: function () {
+		showCountdown: function() {
 			var timer = Timer.container;
 			timer.textContent = 3;
 
 			function change(i) {
-				return function () {
-					timer.textContent = i !== 0 ? (i !== 1 ? i - 1 : "GO!") : "";
+				return function() {
+					timer.textContent =
+						i !== 0 ? (i !== 1 ? i - 1 : "GO!") : "";
 					if (i === 0) {
 						Game.run();
 					}
@@ -483,14 +549,23 @@
 			for (var i = 3; i >= 0; i--) {
 				var changeFunction = change(i);
 				setTimeout(changeFunction, (3 - (i - 1)) * 1000);
-			};
-			var timerTween = new TimelineLite({paused:true});
-			timerTween.from(".timer-counter",.5,{opacity:0,scale:.5}).to(".timer-part-sides",.5,{backgroundPosition:"0px 0",ease: Linear.easeNone})
-			.to(".timer-copy",.5,{opacity:1,scale:1,ease: Back.easeOut})
+			}
+			var timerTween = new TimelineLite({ paused: true });
+			timerTween
+				.from(".timer-counter", 0.5, { opacity: 0, scale: 0.5 })
+				.to(".timer-part-sides", 0.5, {
+					backgroundPosition: "0px 0",
+					ease: Linear.easeNone
+				})
+				.to(".timer-copy", 0.5, {
+					opacity: 1,
+					scale: 1,
+					ease: Back.easeOut
+				});
 			timerTween.play();
 		},
 
-		add: function (penalty) {
+		add: function(penalty) {
 			var seconds = Timer.time.seconds;
 			var minutes = Timer.time.minutes;
 			var hours = Timer.time.hours;
@@ -521,19 +596,51 @@
 
 		penalty: function() {
 			var penaltyTween = new TimelineLite();
-			penaltyTween.to(".penalty",.5,{opacity:1,scale:1,ease: Bounce.easeOut}).to(".penalty",1,{opacity:0,y:-40,delay:.3});
-			TweenMax.set(".penalty", {clearProps:"all"});
+			penaltyTween
+				.to(".penalty", 0.5, {
+					opacity: 1,
+					scale: 1,
+					ease: Bounce.easeOut
+				})
+				.to(".penalty", 1, { opacity: 0, y: -40, delay: 0.3 });
+			TweenMax.set(".penalty", { clearProps: "all" });
 		},
 
-		getTime: function () {
+		getTime: function() {
 			var seconds = Timer.time.seconds;
 			var minutes = Timer.time.minutes;
 			var hours = Timer.time.hours;
-			return (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+			return (
+				(hours ? (hours > 9 ? hours : "0" + hours) : "00") +
+				":" +
+				(minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") +
+				":" +
+				(seconds > 9 ? seconds : "0" + seconds)
+			);
 		},
 
-		reset: function () {
+		reset: function() {
 			Timer.time = 0;
+		},
+
+		start: function() {
+			Timer.intervalHandle = setInterval(Timer.update, 1);
+			stopwatch.start();
+		},
+
+		stop: function() {
+			stopwatch.stop();
+			clearInterval(Timer.intervalHandle);
+		},
+
+		update: function() {
+			Timer.container.textContent = Util.formatTime(stopwatch.time());
+		},
+
+		addPenalty: function() {
+			stopwatch.add();
+			Timer.update();
+			Timer.penalty();
 		}
 	};
 
@@ -560,19 +667,20 @@
 			questions: false,
 			terrain: false,
 			bike: false,
-			submit: false
+			submit: false,
+			updateAnswer: []
 		},
 
 		restartAttempts: 0,
 
 		status: "loading",
 
-		loading: function () {
+		loading: function() {
 			var container = document.querySelector(".loading");
 			var text = container.textContent;
-			var dotsCount = ((text).match(/\./g)).length;
+			var dotsCount = text.match(/\./g).length;
 			if (Game.status === "loading") {
-				setTimeout(function () {
+				setTimeout(function() {
 					text = dotsCount !== 3 ? text + "." : "Loading.";
 					container.textContent = text;
 					Game.loading();
@@ -580,23 +688,24 @@
 			}
 		},
 
-		fetchQuestions: function () {
+		fetchQuestions: function() {
 			Data.fetch("/userData").then(
-				function (response) {
+				function(response) {
 					Game.userData = response.userInfo.shift();
 					Game.questions = Util.randomize(response.userInfo);
 					Game.selectRider(Game.userData.riderName);
 
-					document.querySelector(".player-name").textContent = Game.userData.userName;
+					document.querySelector(".player-name").textContent =
+						Game.userData.userName;
 				},
-				function (err) {
+				function(err) {
 					Game.error.questions = true;
 					/** TODO: Handle error */
 				}
 			);
 		},
 
-		run: function () {
+		run: function() {
 			if (
 				!Game.error.questions &&
 				!Game.error.terrain &&
@@ -614,11 +723,11 @@
 			}
 		},
 
-		checkAnswer: function (answer) {
+		checkAnswer: function(answer) {
 			if (answer) {
 				setTimeout(Timer.end, 0);
 			} else {
-				setTimeout(function () {
+				setTimeout(function() {
 					Timer.end();
 					Timer.penalty();
 				}, 0);
@@ -626,12 +735,12 @@
 			Game.levelUp();
 		},
 
-		showQuestion: function () {
+		showQuestion: function() {
 			Game.status = "pausedForQuestion";
 			Question.show();
 		},
 
-		firstLevel: function () {
+		firstLevel: function() {
 			var yPos = -(bgImage.clientHeight - Terrain.step);
 			Terrain.position = yPos;
 			var path = Bike.paths[Game.platform][Game.level];
@@ -646,7 +755,7 @@
 			});
 		},
 
-		levelUp: function () {
+		levelUp: function() {
 			if (Game.level === 11) {
 				return false;
 			}
@@ -676,31 +785,56 @@
 			Game.level++;
 		},
 
-		reset: function () {
+		reset: function() {
 			console.log("resetting");
 			Terrain.render();
 		},
 
-		selectRider: function (riderName) {
+		selectRider: function(riderName) {
 			Bike.selectedRider = riderName === "CS Santosh" ? 1 : 0;
 			Bike.render();
 		},
 
-		complete: function () {
+		updateAnswer: function(answer) {
+			console.log(Game.level - 1, Game.userData.userId, Util.formatTime(stopwatch.time()), Game.checkpoints, answer);
+			var formData = new FormData();
+			formData.set("userId", Game.userData.userId);
+			formData.set("time", Util.formatTime(stopwatch.time()));
+			formData.set("Checkpoints", Game.checkpoints);
+			formData.set("question", Game.level - 1);
+			formData.set("answer", answer);
+
+			Data.post("/update-answer", formData).then(
+				function(response) {
+					console.log(response);
+					if (response !== "success") {
+						/** TODO: Handle submit error */
+					} else {
+						//Popup.show();
+					}
+				},
+				function(error) {
+					Game.error.updateAnswer.push([Game.level, answer]);
+					/** TODO: Handle submit error */
+				}
+			);
+		},
+
+		complete: function() {
 			var formData = new FormData();
 			formData.set("userId", Game.userData.userId);
 			formData.set("time", Timer.getTime());
 			formData.set("Checkpoints", Game.checkpoints);
 
 			Data.post("/getscoredetails", formData).then(
-				function (response) {
+				function(response) {
 					if (response !== "success") {
 						/** TODO: Handle submit error */
 					} else {
 						Popup.show();
 					}
 				},
-				function (error) {
+				function(error) {
 					Game.error.submit = true;
 					/** TODO: Handle submit error */
 				}
@@ -709,13 +843,13 @@
 	};
 
 	var Data = {
-		endpoint: "http://com.22feetlabs.com/heroBikeGame/api",
+		endpoint: "http://14.141.44.165/merzouga-2018/api",
 
-		fetch: function (url) {
-			return new Promise(function (resolve, reject) {
+		fetch: function(url) {
+			return new Promise(function(resolve, reject) {
 				var xmlhttp = new XMLHttpRequest();
 
-				xmlhttp.onreadystatechange = function () {
+				xmlhttp.onreadystatechange = function() {
 					if (xmlhttp.readyState == XMLHttpRequest.DONE) {
 						if (xmlhttp.status == 200) {
 							try {
@@ -746,11 +880,11 @@
 			});
 		},
 
-		post: function (url, data) {
-			return new Promise(function (resolve, reject) {
+		post: function(url, data) {
+			return new Promise(function(resolve, reject) {
 				var xmlhttp = new XMLHttpRequest();
 
-				xmlhttp.onreadystatechange = function () {
+				xmlhttp.onreadystatechange = function() {
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 						resolve(xmlhttp.responseText);
 					}
@@ -783,7 +917,7 @@
 			b: document.querySelector(".question-options.b")
 		},
 
-		show: function () {
+		show: function() {
 			var question = (Question.currentQuestion =
 				Game.questions[Game.level - 1]);
 			Question.questionNumberContainer.innerHTML =
@@ -800,7 +934,11 @@
 					zIndex: 2
 				})
 				.from(".question-content-wrap", 0.4, { opacity: 0 })
-				.from(".question-content-wrap-bg", 0.5, { height: 0, opacity: 0, onComplete: Timer.add })
+				.from(".question-content-wrap-bg", 0.5, {
+					height: 0,
+					opacity: 0,
+					onComplete: Timer.start
+				})
 				.from(".question-copy", 0.3, { opacity: 0 })
 				.staggerFrom(
 					".question-options",
@@ -810,28 +948,32 @@
 				);
 		},
 
-		listeners: function () {
+		listeners: function() {
 			document
 				.querySelectorAll(".question-options")
-				.forEach(function (element, index) {
-					element.addEventListener("click", function (e) {
+				.forEach(function(element, index) {
+					element.addEventListener("click", function(e) {
 						var option = e.target.classList[1]; // the second class name is the option selected
 						var answer = Question.checkAnswer(option);
-						clearTimeout(Timer.timeoutHandle);
 						Game.status = "running";
+						Timer.stop();
 						Question.hide();
 						if (!answer) {
-							Timer.add(true); // first argument of Timer.add() is penalty
+							Timer.addPenalty();
 						} else {
 							Game.checkpoints++;
-							document.querySelector(".question-indicator").textContent = "Checkpoint " + ( Game.checkpoints ) + "/10";
+							document.querySelector(
+								".question-indicator"
+							).textContent =
+								"Checkpoint " + Game.checkpoints + "/10";
 						}
 						Game.levelUp();
+						Game.updateAnswer(e.target.textContent);
 					});
 				});
 		},
 
-		hide: function () {
+		hide: function() {
 			new TimelineLite()
 				.to(".question-popup", 0.3, {
 					autoAlpha: 0,
@@ -851,7 +993,7 @@
 				);
 		},
 
-		checkAnswer: function (option) {
+		checkAnswer: function(option) {
 			var answer =
 				Game.userData.riderName === Question.currentQuestion.riderName
 					? "a"
@@ -863,30 +1005,41 @@
 	var Popup = {
 		container: document.querySelector(".popup-wrap"),
 
-		show: function () {
-			Popup.container.querySelector(".text-copy").textContent = "I've completed the HeroMotoSports #Merzouga2018 Challenge in " + Timer.getTime() + "! Can you beat my record? Take the challenge now.";
-			TweenMax.to(Popup.container, 0.5, { autoAlpha: 1, display: "block", delay: 0.5 });
+		show: function() {
+			Popup.container.querySelector(".text-copy").textContent =
+				"I've completed the HeroMotoSports #Merzouga2018 Challenge in " +
+				Timer.getTime() +
+				"! Can you beat my record? Take the challenge now.";
+			TweenMax.to(Popup.container, 0.5, {
+				autoAlpha: 1,
+				display: "block",
+				delay: 0.5
+			});
 		},
 
-		hide: function () {
-			TweenMax.to(Popup.container, 0.5, { autoAlpha: 0, display: "none", delay: 0.5 });
+		hide: function() {
+			TweenMax.to(Popup.container, 0.5, {
+				autoAlpha: 0,
+				display: "none",
+				delay: 0.5
+			});
 		}
 	};
 
-	bgImage.onload = function () {
+	bgImage.onload = function() {
 		Game.background = true;
 		Terrain.render();
 	};
-	bgImage.onerror = function () {
+	bgImage.onerror = function() {
 		Game.error.terrain = true;
 	};
 	bgImage.src = Util.getBackgroundImage();
 	bgImage.className = "terrain";
 
-	bikeAtlas.onload = function () {
+	bikeAtlas.onload = function() {
 		Game.bike = true;
 	};
-	bikeAtlas.onerror = function () {
+	bikeAtlas.onerror = function() {
 		Game.error.bike = true;
 	};
 	bikeAtlas.className = "bike";
@@ -899,5 +1052,4 @@
 	window.Game = Game;
 	window.Popup = Popup;
 	window.Bike = Bike;
-
 })();
